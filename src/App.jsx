@@ -28,8 +28,11 @@ import DashboardHome from "./pages/LearnerDashBoard/DashboardHome.jsx";
 import MyCourses from "./pages/LearnerDashBoard/MyCourses.jsx";
 import CourseDetails from "./pages/LearnerDashBoard/CourseDetails.jsx";
 import Assignments from "./pages/LearnerDashBoard/Assignments.jsx";
+import Discussions from "./pages/LearnerDashBoard/Discussions.jsx";
+import Notifications from "./pages/LearnerDashBoard/Notifications.jsx";
 import MyProfile from "./pages/LearnerDashBoard/MyProfile.jsx";
 import Settings from "./pages/LearnerDashBoard/Settings.jsx";
+import Grades from "./pages/LearnerDashBoard/Grades.jsx";
 
 export default function App() {
   return (
@@ -157,6 +160,9 @@ export default function App() {
           <Route path="my-courses" element={<MyCourses />} />
           <Route path="course/:id" element={<CourseDetails />} />
           <Route path="assignments" element={<Assignments />} />
+          <Route path="discussions" element={<Discussions />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="grades" element={<Grades />} />
           <Route path="profile" element={<MyProfile />} />
           <Route path="settings" element={<Settings />} />
         </Route>
