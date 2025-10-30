@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
-import LearnerSidebar from "../components/Sidebar/LearnerSidebar.jsx";
+// removed LearnerSidebar import since sidebar will no longer be displayed
+import QuickNav from "../components/QuickNav/QuickNav.jsx";
 
 export default function LearnerLayout() {
   const navigate = useNavigate();
@@ -11,7 +12,6 @@ export default function LearnerLayout() {
       return null;
     }
   });
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (!learner) navigate("/login");
@@ -19,30 +19,52 @@ export default function LearnerLayout() {
 
   function handleLogout() {
     localStorage.removeItem("learner");
-    navigate("/login");
+    navigate("/"); // redirect to main home page after logout
   }
+
+  // quick/popover state only (sidebar removed)
+  const [quickOpen, setQuickOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(() => window.innerWidth > 900);
+
+  useEffect(() => {
+    function onResize() { setIsDesktop(window.innerWidth > 900); }
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   return (
     <div className="tm-wrap">
-      {/* Sidebar */}
-      <LearnerSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} onLogout={handleLogout} />
+      {/* Sidebar removed - navigation is available via profile QuickNav */}
 
-      {/* Main Area */}
       <div className="tm-main-area">
-        <header className="tm-topbar">
+        <header className="tm-topbar" style={{ position: "relative" }}>
           <div className="left">
-            <button className="menu-btn" onClick={() => setSidebarOpen(true)}>
-              ☰
-            </button>
+            {/* menu button removed because sidebar is not used */}
             <span>Welcome{learner?.firstName ? `, ${learner.firstName}` : ""}</span>
           </div>
 
-          <div className="right">
-            {/* avatar/name now link to profile; removed top-right logout button */}
-            <Link to="/dashboard/profile" className="profile-link" onClick={() => setSidebarOpen(false)}>
-              <div className="tm-avatar" title={learner?.email || "Learner"}>{(learner?.firstName?.[0] || "U").toUpperCase()}</div>
+          <div className="right" style={{ position: "relative" }}>
+            <div
+              onClick={() => setQuickOpen((s) => !s)}
+              style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}
+            >
+              <div className="tm-avatar" title={learner?.email || "Learner"}>
+                {(learner?.firstName?.[0] || "U").toUpperCase()}
+              </div>
               <div className="tm-name">{learner?.firstName || "Learner"}</div>
-            </Link>
+            </div>
+
+            <QuickNav
+              open={quickOpen}
+              onClose={() => setQuickOpen(false)}
+              onLogout={() => {
+                handleLogout();
+                setQuickOpen(false);
+              }}
+              notifications={3}
+              messages={1}
+              anchor="right" /* keep dropdown anchored to top-right since sidebar is removed */
+            />
           </div>
         </header>
 
@@ -52,6 +74,9 @@ export default function LearnerLayout() {
       </div>
 
       <style>{`
+        /* app layout adjusted because sidebar has been removed */
+        html, body, #root { overflow-x: hidden; }
+
         .tm-wrap {
           display: flex;
           min-height: 100vh;
@@ -64,6 +89,7 @@ export default function LearnerLayout() {
           display: flex;
           flex-direction: column;
           width: 100%;
+          margin-left: 0; /* ensure full width since no sidebar */
         }
 
         .tm-topbar {
@@ -83,26 +109,10 @@ export default function LearnerLayout() {
           font-weight: 700;
         }
 
-        .menu-btn {
-          display: none;
-          background: none;
-          border: none;
-          font-size: 1.4rem;
-          cursor: pointer;
-        }
-
         .right {
           display: flex;
           align-items: center;
           gap: 10px;
-        }
-
-        .profile-link {
-          display:flex;
-          align-items:center;
-          gap:8px;
-          text-decoration:none;
-          color:inherit;
         }
 
         .tm-avatar {
@@ -127,31 +137,9 @@ export default function LearnerLayout() {
         }
 
         @media (max-width: 900px) {
-          .menu-btn {
-            display: inline;
-          }
+          .tm-topbar { padding: 12px 14px; }
+          .tm-content { padding: 16px; }
         }
-
-        /* prevent horizontal overflow */
-        html, body, #root { overflow-x: hidden; }
-
-        /* main area default */
-        .tm-main-area { flex:1; min-width:0; transition: margin-left .22s ease-in-out, padding .18s ease; }
-
-        /* reserve modest space for the sidebar on desktop (subtle gap) */
-        @media (min-width: 901px) {
-          .tm-main-area { margin-left: calc(var(--sidebar-width, 220px) + var(--sidebar-gap, 20px)); padding: 20px 28px; }
-          /* when sidebar is collapsed shift content left accordingly */
-          .ls-sidebar.collapsed ~ .tm-main-area { margin-left: calc(var(--sidebar-collapsed-width, 64px) + var(--sidebar-gap, 20px)); }
-        }
-
-        @media (max-width: 900px) {
-          .tm-main-area { margin-left: 0; padding: 16px; } /* drawer overlays content on small screens */
-        }
-
-        /* header/content polish (kept minimal so sidebar doesn't dominate) */
-        .tm-topbar { background: #ffffff; border-bottom: 1px solid rgba(15,23,42,0.03); padding: 12px 16px; }
-        .tm-content { padding-top: 18px; }
       `}</style>
     </div>
   );

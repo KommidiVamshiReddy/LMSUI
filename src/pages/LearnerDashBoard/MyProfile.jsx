@@ -33,7 +33,11 @@ export default function MyProfile() {
       </section>
 
       <footer className="profile-foot">
-        <button className="logout" onClick={handleLogout}>Logout</button>
+        <div style={{marginTop:12, display:"flex", justifyContent:"flex-end"}}>
+          <button className="btn" onClick={()=>{ localStorage.removeItem("learner"); navigate("/login"); }}>
+            Logout
+          </button>
+        </div>
       </footer>
 
       <style>{`

@@ -1,109 +1,77 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAppState } from "../../state/AppState.jsx";
 
-const demo = [
-  { id: "c1", title: "React for Beginners", instructor: "Asha K", progress: 42 },
-  { id: "c2", title: "Advanced JavaScript", instructor: "Ravi P", progress: 78 },
-  { id: "c3", title: "UI/UX Fundamentals", instructor: "Sneha R", progress: 12 },
+const demoCourses = [
+  { id: "c1", title: "React for Beginners", progress: 42, price: 499 },
+  { id: "c2", title: "Advanced JavaScript", progress: 20, price: 699 },
+  { id: "c3", title: "UI/UX Fundamentals", progress: 12, price: 299 },
 ];
 
 export default function MyCourses() {
-  const [courses, setCourses] = useState([]);
-
-  useEffect(() => {
-    setCourses([
-      {
-        id: 1,
-        title: "React Fundamentals",
-        instructor: "John Smith",
-        progress: 78,
-        thumbnail: "https://picsum.photos/400/220?random=1",
-      },
-      {
-        id: 2,
-        title: "UI/UX Design Masterclass",
-        instructor: "Emily Davis",
-        progress: 45,
-        thumbnail: "https://picsum.photos/400/220?random=2",
-      },
-      {
-        id: 3,
-        title: "JavaScript Data Structures",
-        instructor: "Michael Johnson",
-        progress: 90,
-        thumbnail: "https://picsum.photos/400/220?random=3",
-      },
-    ]);
-  }, []);
+  const { addToCart, addToWishlist, cart, wishlist } = useAppState();
 
   return (
-    <div className="my-courses-page">
-      <h1 className="page-title">🎓 My Courses</h1>
-      <p className="muted">Continue where you left off and track your progress</p>
+    <div className="page-wrap">
+      <header className="page-head">
+        <h1>My Courses</h1>
+        <p className="muted">Continue where you left off</p>
+      </header>
 
-      <div className="grid">
-        {demo.map((c) => (
-          <article key={c.id} className="course-card">
-            <div className="meta">
-              <div className="title">{c.title}</div>
-              <div className="sub">{c.instructor}</div>
-            </div>
+      <section className="courses">
+        {demoCourses.map((c) => {
+          const inCart = cart.find((x) => x.id === c.id);
+          const inWishlist = wishlist.find((x) => x.id === c.id);
+          return (
+            <article className="course" key={c.id}>
+              <div className="info">
+                <h3>{c.title}</h3>
+                <div className="progress-bar">
+                  <div
+                    className="fill"
+                    style={{ width: c.progress + "%" }}
+                  />
+                </div>
+                <div className="muted" style={{ marginTop: 6 }}>
+                  Price: ₹{c.price}
+                </div>
+              </div>
 
-            <div className="progress-wrap">
-              <div className="progress-bar"><div style={{ width: `${c.progress}%` }} /></div>
-              <div className="pct">{c.progress}%</div>
-            </div>
-
-            <div className="actions">
-              <Link to={`/dashboard/course/${c.id}`} className="btn">Open</Link>
-            </div>
-          </article>
-        ))}
-      </div>
+              <div className="actions">
+                <Link to={`/dashboard/course/${c.id}`} className="btn">
+                  Open
+                </Link>
+                <button
+                  className="btn alt"
+                  onClick={() => addToCart(c)}
+                  disabled={!!inCart}
+                >
+                  {inCart ? "In cart" : "Add to cart"}
+                </button>
+                <button
+                  className="btn ghost"
+                  onClick={() => addToWishlist(c)}
+                  disabled={!!inWishlist}
+                >
+                  {inWishlist ? "Saved" : "Wishlist"}
+                </button>
+              </div>
+            </article>
+          );
+        })}
+      </section>
 
       <style>{`
-        .my-courses-page {
-          background: #fff;
-          border-radius: 14px;
-          box-shadow: 0 8px 30px rgba(15,23,42,0.05);
-          padding: 24px;
-          max-width: 1100px;
-          margin: 0 auto;
-        }
-
-        .page-title{ font-size:1.5rem; margin-bottom:12px; color:#0f172a; }
-        .muted {
-          color: #64748b;
-          font-size: 0.95rem;
-          margin-bottom: 20px;
-        }
-
-        .grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-        .course-card{ background:#fff; padding:12px; border-radius:12px; box-shadow:0 8px 30px rgba(2,6,23,0.05); display:flex; flex-direction:column; gap:10px; }
-
-        .meta {
-          display: flex;
-          flex-direction: column;
-          flex-grow: 1;
-        }
-
-        .title{ font-weight:800; }
-        .sub{ color:#6b7280; font-size:0.9rem; }
-
-        .progress-wrap{ display:flex; align-items:center; gap:8px; }
-        .progress-bar{ flex:1; height:8px; background:#eef2ff; border-radius:8px; overflow:hidden; }
-        .progress-bar > div{ height:100%; background:linear-gradient(90deg,#2563eb,#06b6d4); }
-        .pct{ font-weight:800; color:#0f172a; width:48px; text-align:right; }
-
-        .actions{ display:flex; justify-content:flex-end; }
-        .btn{ padding:8px 10px; background:#2563eb; color:#fff; border-radius:8px; text-decoration:none; font-weight:700; }
-
-        @media (max-width: 700px) {
-          .my-courses-page {
-            padding: 16px;
-          }
-          .grid{ grid-template-columns:1fr; }
-        }
+        .page-wrap{ max-width:1100px; margin:18px auto; padding:12px; font-family:Inter,system-ui,Arial; }
+        .courses{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; margin-top:12px; }
+        .course{ background:#fff; padding:14px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 8px 24px rgba(2,6,23,0.04); }
+        .progress-bar{ width:220px; height:10px; background:#eef2ff; border-radius:999px; overflow:hidden; margin-top:8px; }
+        .fill{ height:100%; background:linear-gradient(90deg,#3b82f6,#06b6d4); transition: width .5s; }
+        .btn{ background:#2563eb; color:#fff; padding:8px 12px; border-radius:8px; text-decoration:none; font-weight:700; border:none; cursor:pointer; }
+        .btn.alt{ background:#06b6d4; margin-left:8px; }
+        .btn.ghost{ background:transparent; color:#0f172a; border:1px solid #e6eef9; margin-left:8px; }
+        .btn[disabled]{ opacity:0.6; cursor:default; }
+        @media(max-width:700px){ .course{ flex-direction:column; align-items:flex-start; gap:10px; } .progress-bar{ width:100% } }
       `}</style>
     </div>
   );

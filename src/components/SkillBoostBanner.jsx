@@ -4,141 +4,204 @@ export default function SkillBoostBanner() {
   return (
     <section className="sb-banner-section">
       <div className="sb-banner-content">
+        {/* LEFT SIDE */}
         <div className="sb-banner-left">
           <div className="sb-banner-brand">
-            <span className="sb-logo-main">HG's TalentMinds</span>
+            <span className="sb-logo-main">HG's</span>
+            <span className="sb-logo-highlight">TalentMinds</span>
             <span className="sb-logo-divider">|</span>
             <span className="sb-logo-boost">SkillBoost</span>
           </div>
+
           <h2>
-            Unlock Your Potential with <span className="sb-highlight">Free, Career-Ready Programs</span>
+            Boost Your Skills with{" "}
+            <span className="sb-highlight">Free, Career-Ready Programs</span>
           </h2>
+
           <p>
-            Access 300+ free, expert-led courses and boost your skills for the future of work.
+            Explore 300+ expert-led courses designed to elevate your career.
+            Learn in-demand skills for free and stay ahead in today’s job market.
           </p>
+
           <a href="/courses?free=true" className="sb-banner-btn">
-            Explore Free Programs
+            Explore Free Programs →
           </a>
         </div>
+
+        {/* RIGHT SIDE */}
         <div className="sb-banner-right">
           <img
-            src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80"
-            alt="Skill Boost"
+            src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=800&q=80"
+            alt="Learning and Skill Growth"
+            className="sb-banner-img"
           />
         </div>
       </div>
+
+      {/* STYLES */}
       <style>{`
         .sb-banner-section {
-          background: #e0f2fe;
-          border-radius: 16px;
-          margin: 48px auto 0 auto;
-          max-width: 98vw;
-          box-shadow: 0 2px 16px rgba(14,165,233,0.08);
-          border: 1.5px solid #bae6fd;
+          background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+          border-radius: 20px;
+          border: 1.5px solid #dbeafe;
+          box-shadow: 0 4px 24px rgba(37, 99, 235, 0.12);
+          margin: 60px auto;
+          max-width: 1200px;
+          overflow: hidden;
         }
+
         .sb-banner-content {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 48px 48px 36px 48px;
-          gap: 32px;
+          padding: 64px 72px;
+          gap: 48px;
         }
+
         .sb-banner-left {
           flex: 1.2;
         }
+
         .sb-banner-brand {
           display: flex;
           align-items: center;
-          gap: 10px;
-          font-size: 1.5rem;
-          font-weight: 800;
-          margin-bottom: 18px;
+          flex-wrap: wrap;
+          gap: 8px;
+          font-size: 1.7rem;
+          font-weight: 900;
+          margin-bottom: 20px;
         }
+
         .sb-logo-main {
+          color: #fbbf24;
+          font-weight: 900;
+        }
+
+        .sb-logo-highlight {
           color: #2563eb;
           font-weight: 900;
         }
+
         .sb-logo-divider {
           color: #94a3b8;
-          font-weight: 700;
+          font-weight: 600;
         }
+
         .sb-logo-boost {
-          color: #f59e42;
-          font-weight: 900;
-        }
-        .sb-banner-left h2 {
-          font-size: 2.3rem;
-          color: #0b4da3;
+          color: #f97316;
           font-weight: 800;
-          margin-bottom: 16px;
-          line-height: 1.15;
         }
+
+        .sb-banner-left h2 {
+          font-size: 2.4rem;
+          color: #1e3a8a;
+          font-weight: 800;
+          margin-bottom: 18px;
+          line-height: 1.2;
+        }
+
         .sb-highlight {
-          color: #f59e42;
+          color: #2563eb;
         }
+
         .sb-banner-left p {
-          font-size: 1.18rem;
+          font-size: 1.15rem;
           color: #334155;
-          margin-bottom: 28px;
+          margin-bottom: 32px;
+          max-width: 560px;
+          line-height: 1.6;
         }
+
         .sb-banner-btn {
           background: linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
           color: #fff;
           border: none;
           border-radius: 10px;
-          padding: 15px 38px;
+          padding: 14px 36px;
           font-weight: 700;
-          font-size: 1.15rem;
+          font-size: 1.1rem;
           text-decoration: none;
-          box-shadow: 0 2px 8px rgba(37,99,235,0.08);
-          transition: background 0.2s;
+          box-shadow: 0 4px 16px rgba(37,99,235,0.25);
+          transition: all 0.25s ease;
           display: inline-block;
         }
+
         .sb-banner-btn:hover {
-          background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%);
+          background: linear-gradient(90deg, #1d4ed8 0%, #3b82f6 100%);
+          transform: translateY(-2px);
         }
+
         .sb-banner-right {
           flex: 1;
           display: flex;
-          justify-content: flex-end;
+          justify-content: center;
+          align-items: center;
         }
-        .sb-banner-right img {
-          width: 320px;
-          height: 220px;
+
+        .sb-banner-img {
+          width: 100%;
+          max-width: 400px;
+          height: auto;
           object-fit: cover;
-          border-radius: 14px;
-          box-shadow: 0 4px 24px rgba(14,165,233,0.10);
+          border-radius: 16px;
+          box-shadow: 0 6px 28px rgba(37,99,235,0.2);
+          transition: transform 0.3s ease;
         }
-        @media (max-width: 900px) {
+
+        .sb-banner-img:hover {
+          transform: scale(1.03);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 950px) {
           .sb-banner-content {
             flex-direction: column;
-            align-items: flex-start;
-            padding: 32px 12vw 24px 12vw;
-            gap: 18px;
+            align-items: center;
+            text-align: center;
+            padding: 40px 10vw;
           }
-          .sb-banner-right img {
+
+          .sb-banner-left {
+            flex: unset;
+          }
+
+          .sb-banner-img {
             width: 100%;
-            max-width: 320px;
-            height: 160px;
+            max-width: 420px;
+            height: auto;
+            margin-top: 16px;
+          }
+
+          .sb-banner-left p {
+            margin: 0 auto 28px;
           }
         }
+
         @media (max-width: 600px) {
           .sb-banner-section {
-            padding: 0;
-            margin: 28px 0 0 0;
+            margin: 32px 0;
           }
+
           .sb-banner-content {
-            padding: 18px 4vw 18px 4vw;
+            padding: 28px 6vw;
           }
-          .sb-banner-left h2 {
-            font-size: 1.2rem;
-          }
+
           .sb-banner-brand {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            justify-content: center;
           }
-          .sb-banner-right img {
-            max-width: 98vw;
-            height: 110px;
+
+          .sb-banner-left h2 {
+            font-size: 1.5rem;
+          }
+
+          .sb-banner-left p {
+            font-size: 1rem;
+          }
+
+          .sb-banner-btn {
+            font-size: 1rem;
+            padding: 12px 28px;
           }
         }
       `}</style>

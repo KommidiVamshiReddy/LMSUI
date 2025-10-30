@@ -16,107 +16,91 @@ const companies = [
 
 export default function CompanyMarquee() {
   return (
-    <div className="company-marquee-container">
-      <div className="company-marquee-title">
-        <span>Our Hiring Partners</span>
-      </div>
+    <div className="marquee-wrapper">
+      <h2>Our Hiring Partners</h2>
 
-      <div className="company-marquee">
-        <div className="company-marquee-track">
-          {companies.concat(companies).map((company, idx) => (
-            <div className="company-marquee-item" key={idx}>
-              <img
-                src={company.logo}
-                alt={company.name}
-                onError={(e) => (e.target.src = "/fallback-logo.png")}
-              />
-              <span>{company.name}</span>
+      <div className="marquee">
+        <div className="track">
+          {companies.concat(companies).map((c, i) => (
+            <div className="logo" key={i}>
+              <img src={c.logo} alt={c.name} loading="lazy" />
             </div>
           ))}
         </div>
       </div>
 
       <style>{`
-        .company-marquee-container {
-          border-radius: 14px;
-          margin: 0 auto;
-          padding: 0;
-          max-width: 1100px;
-          background: transparent;
-          user-select: none;
+        /* Basic container */
+        .marquee-wrapper {
+          text-align: center;
+          padding: 50px 0;
+          background: #f8fafc;
+          overflow: hidden;
         }
 
-        .company-marquee-title {
+        .marquee-wrapper h2 {
+          color: #0f172a;
+          font-size: 1.8rem;
           font-weight: 800;
-          color: #0b4da3;
-          font-size: 1.6rem;
-          margin-left: 24px;
-          margin-bottom: 16px;
-          letter-spacing: 0.4px;
+          margin-bottom: 30px;
         }
 
-        .company-marquee {
+        /* Marquee area */
+        .marquee {
           overflow: hidden;
           width: 100%;
           position: relative;
         }
 
-        .company-marquee-track {
+        .track {
           display: flex;
-          align-items: center;
-          animation: marquee 20s linear infinite;
-          width: max-content;
+          animation: scroll 25s linear infinite;
+          width: fit-content;
         }
 
-        .company-marquee:hover .company-marquee-track {
-          animation-play-state: paused;
+        .logo {
+          flex: 0 0 auto;
+          margin: 0 40px;
+          transition: transform 0.3s ease;
         }
 
-        .company-marquee-item {
-          display: flex;
-          align-items: center;
-          margin: 0 48px;
-          gap: 14px;
-          font-size: 1.1rem;
-          color: #22223b;
-          font-weight: 600;
-          white-space: nowrap;
-          transition: transform 0.2s ease;
+        .logo:hover {
+          transform: scale(1.1);
         }
 
-        .company-marquee-item:hover {
-          transform: scale(1.05);
-        }
-
-        .company-marquee-item img {
+        .logo img {
           height: 50px;
-          max-width: 120px;
+          width: auto;
           object-fit: contain;
-          background: #fff;
-          border-radius: 8px;
-          padding: 8px 14px;
-          box-shadow: 0 1px 8px rgba(0,0,0,0.08);
-          border: 1px solid #e5e7eb;
+          filter: grayscale(20%);
+          transition: filter 0.3s;
         }
 
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+        .logo img:hover {
+          filter: grayscale(0%);
         }
 
-        @media (max-width: 600px) {
-          .company-marquee-title {
-            font-size: 1.1rem;
-            margin-left: 10px;
+        @keyframes scroll {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+          .marquee-wrapper h2 {
+            font-size: 1.4rem;
           }
-          .company-marquee-item {
-            margin: 0 18px;
-            font-size: 0.9rem;
+          .logo {
+            margin: 0 20px;
           }
-          .company-marquee-item img {
-            height: 32px;
-            padding: 4px 8px;
+          .logo img {
+            height: 38px;
           }
+        }
+
+        /* Global fix: Prevent body scrollbar */
+        html, body {
+          overflow-x: hidden !important;
         }
       `}</style>
     </div>

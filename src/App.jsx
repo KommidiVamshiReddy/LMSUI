@@ -3,11 +3,12 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import ScrollToTop from "./components/ScrollToTop";
 
-// 🧭 Public layout components
+// 🧭 App state (cart/messages/wishlist) — ensures dashboard pages & QuickNav have live data
+import { AppStateProvider } from "./state/AppState.jsx";
+
+/* public layout components */
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
-
-// 🌍 Public pages
 import Home from "./pages/Home.jsx";
 import CoursesPage from "./pages/CoursesPage.jsx";
 import CourseDetail from "./pages/CourseDetail.jsx";
@@ -16,13 +17,14 @@ import BecomeMentorPage from "./pages/BecomeMentorPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
 import OtpVerifyPage from "./pages/OtpVerifyPage.jsx";
+import Explore from "./pages/Explore.jsx"; // add this import near other public pages
 
-// 🔐 Forgot password flow
+/* forgot password flow */
 import ForgotPasswordPage from "./pages/forgotPasswordFlow/ForgotPasswordPage.jsx";
 import ResetOtpVerifyPage from "./pages/forgotPasswordFlow/ResetOtpVerifyPage.jsx";
 import ResetPasswordPage from "./pages/forgotPasswordFlow/ResetPasswordPage.jsx";
 
-// 🎓 Learner dashboard layout + pages
+/* learner dashboard layout + pages */
 import LearnerLayout from "./layouts/LearnerLayout.jsx";
 import DashboardHome from "./pages/LearnerDashBoard/DashboardHome.jsx";
 import MyCourses from "./pages/LearnerDashBoard/MyCourses.jsx";
@@ -34,13 +36,14 @@ import MyProfile from "./pages/LearnerDashBoard/MyProfile.jsx";
 import Settings from "./pages/LearnerDashBoard/Settings.jsx";
 import Grades from "./pages/LearnerDashBoard/Grades.jsx";
 
+
+
 export default function App() {
   return (
-    <>
+    <AppStateProvider>
       <ScrollToTop />
 
       <Routes>
-        {/* 🌍 Public pages (with Header + Footer) */}
         <Route
           path="/"
           element={
@@ -167,10 +170,22 @@ export default function App() {
           <Route path="settings" element={<Settings />} />
         </Route>
 
+       
+
         {/* 🧭 Redirects & Fallback */}
         <Route path="/start" element={<Navigate to="/login" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
+        <Route
+          path="/explore"
+          element={
+            <>
+              <Header />
+              <Explore />
+              <Footer />
+            </>
+          }
+        />
       </Routes>
-    </>
+    </AppStateProvider>
   );
 }
